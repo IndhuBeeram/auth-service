@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.AuthenticationException;
+import com.ecom.auth_service.dto.UserResponse;
+import com.ecom.auth_service.dto.UserUpdateRequest;
+
 @Service
 public class AuthService {
 
@@ -62,32 +65,97 @@ public class AuthService {
     // =========================
     // LOGIN
     // =========================
-    public AuthResponse login(LoginRequest request) {
+   public AuthResponse login(LoginRequest request) {
 
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
-        } catch (AuthenticationException ex) {
-            throw new InvalidCredentialsException(
-                    "Invalid email or password"
-            );
-        }
-
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found")
-                );
-
-        String token = jwtService.generateToken(request.getEmail());
-
-        return new AuthResponse(
-                token,
-                user.getEmail(),
-                user.getRole().name()
+    try {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+    } catch (AuthenticationException ex) {
+        throw new InvalidCredentialsException(
+                "Invalid email or password"
         );
     }
+
+    User user = userRepository.findByEmail(request.getEmail())
+            .orElseThrow(() ->
+                    new UsernameNotFoundException("User not found")
+            );
+
+    String token = jwtService.generateToken(
+            user.getId(),
+            user.getEmail(),
+            user.getRole().name()
+    );
+
+    return new AuthResponse(
+            token,
+            user.getEmail(),
+            user.getRole().name()
+    );
+}
+
+public UserResponse updateUser(
+        Long userId,
+        UserUpdateRequest request) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() ->
+                    new UsernameNotFoundException(
+                            "User not found with id: " + userId
+                    )
+            );
+
+    user.setName(request.getName());
+    user.setEmail(request.getEmail());
+    user.setMobileNumber(request.getMobileNumber());
+    user.setGender(request.getGender());
+    user.setBirthday(request.getBirthday());
+    user.setAlternateMobileNumber(
+            request.getAlternateMobileNumber()
+    );
+    user.setHintName(request.getHintName());
+
+    User updatedUser = userRepository.save(user);
+
+    return new UserResponse(
+            updatedUser.getId(),
+            updatedUser.getName(),
+            updatedUser.getEmail(),
+            updatedUser.getRole().name(),
+            updatedUser.getMobileNumber(),
+            updatedUser.getGender(),
+            updatedUser.getBirthday(),
+            updatedUser.getAlternateMobileNumber(),
+            updatedUser.getHintName()
+    );
+}
+
+// =========================
+// GET USER BY ID
+// =========================
+public UserResponse getUserById(Long userId) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() ->
+                    new UsernameNotFoundException(
+                            "User not found with id: " + userId
+                    )
+            );
+
+    return new UserResponse(
+        user.getId(),
+        user.getName(),
+        user.getEmail(),
+        user.getRole().name(),
+        user.getMobileNumber(),
+        user.getGender(),
+        user.getBirthday(),
+        user.getAlternateMobileNumber(),
+        user.getHintName()
+);
+}
 }

@@ -1,61 +1,19 @@
-package com.ecom.auth_service.entity;
+package com.ecom.auth_service.dto;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserUpdateRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false, unique = true)
     private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
-    // =========================
-    // PROFILE DETAILS
-    // =========================
-
-    @Column(name = "mobile_number")
     private String mobileNumber;
-
-    @Column(name = "gender")
     private String gender;
-
-    @Column(name = "birthday")
     private LocalDate birthday;
-
-    @Column(name = "alternate_mobile_number")
     private String alternateMobileNumber;
-
-    @Column(name = "hint_name")
     private String hintName;
 
-
-    // =========================
-    // GETTERS AND SETTERS
-    // =========================
-
-    public Long getId() {
-        return id;
+    public UserUpdateRequest() {
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
     public String getName() {
         return name;
@@ -65,7 +23,6 @@ public class User {
         this.name = name;
     }
 
-
     public String getEmail() {
         return email;
     }
@@ -73,25 +30,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
 
     public String getMobileNumber() {
         return mobileNumber;
@@ -101,7 +39,6 @@ public class User {
         this.mobileNumber = mobileNumber;
     }
 
-
     public String getGender() {
         return gender;
     }
@@ -109,7 +46,6 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
 
     public LocalDate getBirthday() {
         return birthday;
@@ -119,7 +55,6 @@ public class User {
         this.birthday = birthday;
     }
 
-
     public String getAlternateMobileNumber() {
         return alternateMobileNumber;
     }
@@ -127,7 +62,6 @@ public class User {
     public void setAlternateMobileNumber(String alternateMobileNumber) {
         this.alternateMobileNumber = alternateMobileNumber;
     }
-
 
     public String getHintName() {
         return hintName;

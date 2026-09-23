@@ -1,52 +1,47 @@
-package com.ecom.auth_service.entity;
+package com.ecom.auth_service.dto;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false, unique = true)
     private String email;
+    private String role;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
-    // =========================
-    // PROFILE DETAILS
-    // =========================
-
-    @Column(name = "mobile_number")
     private String mobileNumber;
-
-    @Column(name = "gender")
     private String gender;
-
-    @Column(name = "birthday")
     private LocalDate birthday;
-
-    @Column(name = "alternate_mobile_number")
     private String alternateMobileNumber;
-
-    @Column(name = "hint_name")
     private String hintName;
 
 
-    // =========================
-    // GETTERS AND SETTERS
-    // =========================
+    public UserResponse() {
+    }
+
+
+    public UserResponse(
+            Long id,
+            String name,
+            String email,
+            String role,
+            String mobileNumber,
+            String gender,
+            LocalDate birthday,
+            String alternateMobileNumber,
+            String hintName) {
+
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.mobileNumber = mobileNumber;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.alternateMobileNumber = alternateMobileNumber;
+        this.hintName = hintName;
+    }
+
 
     public Long getId() {
         return id;
@@ -75,20 +70,11 @@ public class User {
     }
 
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
